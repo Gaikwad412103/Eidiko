@@ -1,0 +1,544 @@
+//////-----------------app html -----------------------
+
+<div class="navbar-container">
+  <nav class="navbar">
+    <div class="navbar-logo">
+      <a href="/">Pos Billing System</a>
+    </div>
+    <ul class="navbar-links">
+      <li><a routerLink="/">Home</a></li>
+      <li class="dropdown">
+        <a href="#" class="dropbtn">Purchase</a>
+        <div class="dropdown-content">
+          <a routerLink="/add-purchase">Add Purchase</a>
+          <a routerLink="/view-purchase">View Purchase</a>
+        </div>
+      </li>
+      <li><a routerLink="/inventory">Inventory</a></li>
+      <li><a routerLink="/report">Report</a></li>
+      <li><a routerLink="/sale-product">Sale Product</a></li>
+    </ul>
+    <div class="navbar-toggle" (click)="toggleNavbar()">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </div>
+  </nav>
+</div>
+
+<!-- Router Outlet to display components based on route -->
+<router-outlet></router-outlet>
+
+
+
+
+
+
+//-----------------app css-------------------------------
+
+
+
+
+
+/* Main container for the navbar */
+.navbar-container {
+    width: 100%;
+    background: linear-gradient(145deg, #ff6f61, #d04f3d);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+  }
+  
+  /* Navbar styles */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+  }
+  
+  /* Logo styling */
+  .navbar-logo a {
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    text-decoration: none;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    transition: color 0.3s;
+  }
+  
+  .navbar-logo a:hover {
+    color: #ffdf7f;
+  }
+  
+  /* Navbar links styling */
+  .navbar-links {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 25px;
+  }
+  
+  .navbar-links li {
+    display: inline;
+  }
+  
+  .navbar-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+    position: relative;
+    padding: 5px 10px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .navbar-links a:hover {
+    color: #f39c12;
+    transform: scale(1.1);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* 3D effect on navbar links on hover */
+  .navbar-links a:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: #ffdf7f;
+    left: 0;
+    bottom: 0;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+  
+  .navbar-links a:hover:before {
+    transform: scaleX(1);
+  }
+  
+  /* Toggle button for mobile view */
+  .navbar-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .navbar-toggle .bar {
+    width: 30px;
+    height: 4px;
+    background-color: white;
+    margin: 5px 0;
+    border-radius: 10px;
+  }
+  
+  .navbar-toggle:hover .bar {
+    background-color: #f39c12;
+  }
+  
+  /* Responsive design for smaller screens */
+  @media (max-width: 768px) {
+    .navbar-links {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      background-color: #333;
+      position: absolute;
+      top: 70px;
+      left: 0;
+      padding: 20px 0;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+  
+    .navbar-links.active {
+      display: flex;
+    }
+  
+    .navbar-toggle {
+      display: flex;
+    }
+  }
+  
+
+  /* Dropdown Button Style */
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Show the dropdown content when hovering the dropdown button */
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+
+
+
+
+
+
+
+//----------------app ts-------------------
+
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
+})
+export class AppComponent {
+  title = 'pos-billing-system-ui';
+
+  // Function to toggle the navbar in mobile view
+  toggleNavbar() {
+    const navbarLinks = document.querySelector('.navbar-links');
+    navbarLinks?.classList.toggle('active');
+  }
+}
+
+
+
+
+
+
+
+
+////-----------------add purchase html-------------
+
+
+
+
+
+
+<h2>Add Purchase</h2>
+<form (ngSubmit)="onSubmit()" #purchaseForm="ngForm">
+
+  <div class="form-group">
+    <label for="purchaseId">Purchase ID</label>
+    <input
+      type="number"
+      id="purchaseId"
+      name="purchaseId"
+      [(ngModel)]="purchase.purchaseId"
+      required
+      #purchaseId="ngModel"
+      class="form-control"
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="brandName">Brand Name</label>
+    <input
+      type="text"
+      id="brandName"
+      name="brandName"
+      [(ngModel)]="purchase.brandName"
+      required
+      #brandName="ngModel"
+      class="form-control"
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="brandId">Brand ID</label>
+    <input
+      type="number"
+      id="brandId"
+      name="brandId"
+      [(ngModel)]="purchase.brandId"
+      required
+      #brandId="ngModel"
+      class="form-control"
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="size">Size (ml)</label>
+    <input
+      type="number"
+      id="size"
+      name="size"
+      [(ngModel)]="purchase.size"
+      required
+      #size="ngModel"
+      class="form-control"
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="unit">Unit</label>
+    <input
+      type="text"
+      id="unit"
+      name="unit"
+      [(ngModel)]="purchase.unit"
+      required
+      #unit="ngModel"
+      class="form-control"
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="cases">Cases</label>
+    <input
+      type="number"
+      id="cases"
+      name="cases"
+      [(ngModel)]="purchase.cases"
+      required
+      #cases="ngModel"
+      class="form-control"
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="bottles">Bottles</label>
+    <input
+      type="number"
+      id="bottles"
+      name="bottles"
+      [(ngModel)]="purchase.bottles"
+      required
+      #bottles="ngModel"
+      class="form-control"
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="mrp">MRP</label>
+    <input
+      type="number"
+      id="mrp"
+      name="mrp"
+      [(ngModel)]="purchase.mrp"
+      required
+      #mrp="ngModel"
+      class="form-control"
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="totalAmount">Total Amount</label>
+    <input
+      type="number"
+      id="totalAmount"
+      name="totalAmount"
+      [(ngModel)]="purchase.totalAmount"
+      required
+      #totalAmount="ngModel"
+      class="form-control"
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="purchaseDate">Purchase Date</label>
+    <input
+      type="date"
+      id="purchaseDate"
+      name="purchaseDate"
+      [(ngModel)]="purchase.purchaseDate"
+      required
+      #purchaseDate="ngModel"
+      class="form-control"
+    />
+  </div>
+
+  <button type="submit" [disabled]="purchaseForm.invalid" class="btn btn-primary">
+    Submit
+  </button>
+</form>
+
+
+
+
+
+
+
+
+/// -----------------add purchase css--------------
+
+
+
+
+
+/* Overall container */
+form {
+    width: 80%;
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  form:hover {
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Title */
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    font-size: 24px;
+  }
+  
+  /* Form group styling */
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  /* Input fields */
+  input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    margin-top: 5px;
+    transition: border-color 0.3s ease;
+  }
+  
+  input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+  }
+  
+  /* Labels */
+  label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  /* Submit button */
+  button[type='submit'] {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button[type='submit']:hover {
+    background-color: #0056b3;
+  }
+  
+  button[type='submit']:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  /* Small error or success message */
+  .message {
+    text-align: center;
+    font-size: 16px;
+    color: green;
+    margin-top: 20px;
+  }
+  
+  .message.error {
+    color: red;
+  }
+  
+  /* Responsive design for smaller screens */
+  @media (max-width: 768px) {
+    form {
+      width: 95%;
+      padding: 15px;
+    }
+  
+    h2 {
+      font-size: 20px;
+    }
+  }
+  
+
+
+
+
+
+
+
+//----------------add purchase ts--------------------
+
+
+
+
+
+
+import { Component } from '@angular/core';
+import { PurchaseService } from '../service/purchase.service';
+
+@Component({
+  selector: 'app-addpurchase',
+  templateUrl: './addpurchase.component.html',
+  styleUrl: './addpurchase.component.css'
+})
+export class AddpurchaseComponent {
+  // Define the purchase object directly in the component
+  purchase = {
+    purchaseId: 0,
+    brandName: '',
+    brandId: 0,
+    size: 0,
+    unit: '',
+    cases: 0,
+    bottles: 0,
+    mrp: 0,
+    totalAmount: 0,
+    purchaseDate: ''
+  };
+
+  constructor(private purchaseService: PurchaseService) {}
+
+  // Submit the form data
+  onSubmit() {
+    this.purchaseService.addPurchase(this.purchase).subscribe(
+      (response) => {
+        console.log('Purchase added successfully', response);
+        // Handle successful response, e.g., navigate to another page or show a success message
+      },
+      (error) => {
+        console.error('Error adding purchase', error);
+        // Handle error response, e.g., show an error message
+      }
+    );
+  }
+}
+
+
+
